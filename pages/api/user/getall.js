@@ -2,7 +2,6 @@ import connectToDatabase from "@/lib/mongodb";
 import { UserModel } from "@/models/UserModel";
 
 export default async function handler(req, res) {
-  console.log("first");
   if (req.method !== "GET") return res.status(405).end();
 
   await connectToDatabase();

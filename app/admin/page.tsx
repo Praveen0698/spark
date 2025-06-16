@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+export const dynamic = 'force-dynamic';
+
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "0.5rem 1rem",
@@ -79,7 +81,7 @@ export default function LoginAdmin() {
       } else {
         router.push(`/admin/panel?accesstoken=${res.data.accessToken}`);
       }
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);

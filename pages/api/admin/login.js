@@ -6,7 +6,6 @@ import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
-  console.log("first");
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }

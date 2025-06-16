@@ -30,7 +30,7 @@ const Signature = ({ formData, setFormData }) => {
 
   return (
     <section className="signature">
-      <div className="specimen">
+      {/* <div className="specimen">
         <div className="specimen-signature">
           <p>Specimen Signature</p>
           <p>Specimen Signature</p>
@@ -105,7 +105,8 @@ const Signature = ({ formData, setFormData }) => {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
+      <div></div>
       <div className="image">
         <div className="img-drop-area drop-area" onClick={handlePhotoClick}>
           <input

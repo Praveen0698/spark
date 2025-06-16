@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation"; // use 'next/router' for pages/ directory
-import { baseUrl } from "@/constant/baseurl"; // adjust this path as per your structure
+import { useRouter } from "next/navigation";
 import bdl from "@/public/bdl.png";
 import Image from "next/image";
 const LoginUser = () => {
@@ -58,7 +57,7 @@ const LoginUser = () => {
       } else {
         router.push(`/application?token=${result.data.accessToken}`);
       }
-    } catch (err) {
+    } catch {
       setLoading(false);
       setError("** Something went wrong. Please try again.");
     }
@@ -128,7 +127,7 @@ const LoginUser = () => {
             <input
               type="text"
               name="username"
-              placeholder="Email/Mobile No."
+              placeholder="User id"
               value={formData.username}
               onChange={handleInputChange}
               style={inputStyle}

@@ -1,333 +1,274 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+
+const tdStyle = {
+  padding: "6px 10px",
+  fontSize: "13px",
+  verticalAlign: "top",
+};
+
+const inputStyle = {
+  border: "none",
+  borderBottom: "1px dotted #333",
+  fontSize: "13px",
+  width: "100%",
+  outline: "none",
+  background: "transparent",
+};
+
+const fileInputStyle = {
+  fontSize: "13px",
+};
+
+const tableStyle = {
+  width: "100%",
+  borderCollapse: "collapse",
+};
+
+const sectionStyle = {
+  fontFamily: "serif",
+  pageBreakInside: "avoid",
+};
+
+const headingStyle = {
+  fontSize: "16px",
+  marginBottom: "4px",
+  fontWeight: "bold",
+};
+
+const subHeadingStyle = {
+  fontSize: "12px",
+  color: "#555",
+  marginBottom: "10px",
+};
 
 const Personal = ({ formData, setFormData }) => {
-  const handleInputChange = (e) => {
-    if (e.target.name === "addressProof") {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.files[0],
-      });
-    } else if (e.target.name === "panCardFile") {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.files[0],
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-      });
-    }
+  const [signOneSrc, setSignOneSrc] = useState("");
+  const [signTwoSrc, setSignTwoSrc] = useState("");
+
+  const fileSignOneRef = useRef(null);
+  const fileSignTwoRef = useRef(null);
+
+  const handleSignOneClick = () => {
+    fileSignOneRef.current.click();
   };
+
+  const handleSignTwoClick = () => {
+    fileSignTwoRef.current.click();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setFormData({
+      ...formData,
+      [name]: files[0],
+    });
+  };
+
+  const renderInput = (name, type = "text") => {
+    if (type === "file") {
+      return (
+        <input
+          type="file"
+          name={name}
+          onChange={handleFileChange}
+          style={fileInputStyle}
+        />
+      );
+    }
+
+    return (
+      <input
+        type={type}
+        name={name}
+        value={formData[name] || ""}
+        onChange={handleInputChange}
+        style={inputStyle}
+      />
+    );
+  };
+
   return (
-    <section className="personal office">
-      <h3>
-        ANNEXURE-A: <span> Personal Details </span>
+    <section style={sectionStyle}>
+      <h3 style={headingStyle}>
+        ANNEXURE-A: <span>Personal Details</span>
       </h3>
-      <p>(To be filled up by the prospective employee) </p>
-      <table>
+      <p style={subHeadingStyle}>(To be filled by the prospective employee)</p>
+      <table style={tableStyle}>
         <tbody>
           <tr>
-            <td>Name</td>
-            <td colSpan={3}>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={(e) => handleInputChange(e)}
-              />
+            <td style={tdStyle}>Name</td>
+            <td colSpan={3} style={tdStyle}>
+              {renderInput("name")}
             </td>
           </tr>
           <tr>
-            <td>Date of birth</td>
-            <td>
-              <input
-                type="text"
-                name="dob"
-                value={formData.dob}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>Sex</td>
-            <td>
-              <input
-                type="text"
-                name="sex"
-                value={formData.sex}
-                onChange={(e) => handleInputChange(e)}
-              />
+            <td style={tdStyle}>Date of Birth</td>
+            <td style={tdStyle}>{renderInput("dob")}</td>
+            <td style={tdStyle}>Sex</td>
+            <td style={tdStyle}>{renderInput("sex")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Father's Name</td>
+            <td colSpan={3} style={tdStyle}>
+              {renderInput("fatherName")}
             </td>
           </tr>
           <tr>
-            <td>Name of Father</td>
-            <td colSpan={3}>
-              <input
-                type="text"
-                name="fatherName"
-                value={formData.fatherName}
-                onChange={(e) => handleInputChange(e)}
-              />
+            <td style={tdStyle}>Mother's Name</td>
+            <td colSpan={3} style={tdStyle}>
+              {renderInput("motherName")}
             </td>
           </tr>
           <tr>
-            <td>Name of Mother</td>
-            <td colSpan={3}>
-              <input
-                type="text"
-                name="motherName"
-                value={formData.motherName}
-                onChange={(e) => handleInputChange(e)}
-              />
+            <td style={tdStyle}>Nationality</td>
+            <td style={tdStyle}>{renderInput("nationality")}</td>
+            <td style={tdStyle}>State</td>
+            <td style={tdStyle}>{renderInput("state")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Caste</td>
+            <td style={tdStyle}>{renderInput("caste")}</td>
+            <td style={tdStyle}>Religion</td>
+            <td style={tdStyle}>{renderInput("religion")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Category (General/SC/ST/OBC)</td>
+            <td style={tdStyle}>{renderInput("casteCategory")}</td>
+            <td style={tdStyle}>Physically Handicapped (Yes/No)</td>
+            <td style={tdStyle}>{renderInput("physicallyHandicapped")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Ex-Servicemen (Yes/No)</td>
+            <td style={tdStyle}>{renderInput("exServicemen")}</td>
+            <td style={tdStyle}>PAN Number</td>
+            <td style={tdStyle}>{renderInput("panNumber")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Voter ID</td>
+            <td style={tdStyle}>{renderInput("voterId")}</td>
+            <td style={tdStyle}>Ration Card</td>
+            <td style={tdStyle}>{renderInput("rationCardNo")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Identification Marks</td>
+            <td style={tdStyle}>{renderInput("identificationOne")}</td>
+            <td style={tdStyle}>{renderInput("identificationTwo")}</td>
+            <td style={tdStyle}>{renderInput("identificationThree")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Height</td>
+            <td style={tdStyle}>{renderInput("height")}</td>
+            <td style={tdStyle}>Marital Status</td>
+            <td style={tdStyle}>{renderInput("martialStatus")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Spouse's Name</td>
+            <td colSpan={3} style={tdStyle}>
+              {renderInput("spouseName")}
             </td>
           </tr>
           <tr>
-            <td>Nationality</td>
-            <td>
-              <input
-                type="text"
-                name="nationality"
-                value={formData.nationality}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>State</td>
-            <td>
-              <input
-                type="text"
-                name="state"
-                value={formData.state}
-                onChange={(e) => handleInputChange(e)}
-              />
+            <td style={tdStyle}>Spouse Religion</td>
+            <td style={tdStyle}>{renderInput("spouseReligion")}</td>
+            <td style={tdStyle}>Spouse Caste</td>
+            <td style={tdStyle}>{renderInput("spouseCaste")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Inter Religion/Caste Marriage (Yes/No)</td>
+            <td style={tdStyle}>{renderInput("interReligionCaste")}</td>
+            <td style={tdStyle}>Spouse Employed</td>
+            <td style={tdStyle}>{renderInput("spouseEmployeed")}</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}>Spouse Employed In (Org.)</td>
+            <td colSpan={3} style={tdStyle}>
+              {renderInput("spouseEmployeedIn")}
             </td>
           </tr>
           <tr>
-            <td>Caste</td>
-            <td>
-              <input
-                type="text"
-                name="caste"
-                value={formData.caste}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>Religion</td>
-            <td>
-              <input
-                type="text"
-                name="religion"
-                value={formData.religion}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Category <br />
-              General/ SC/ST/OBC/OEC
-            </td>
-            <td>
-              <input
-                type="text"
-                name="casteCategory"
-                value={formData.casteCategory}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>
-              Whether physically <br />
-              handicapped (yes or no)
-            </td>
-            <td>
-              <input
-                type="text"
-                name="physicallyHandicapped"
-                value={formData.physicallyHandicapped}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Whether ex-servicemen? <br /> (yes or no)
-            </td>
-            <td>
-              <input
-                type="text"
-                name="exServicemen"
-                value={formData.exServicemen}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>PAN Number</td>
-            <td>
-              <input
-                type="text"
-                name="panNumber"
-                value={formData.panNumber}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Voter ID Card Number</td>
-            <td>
-              <input
-                type="text"
-                name="voterId"
-                value={formData.voterId}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>Ration Card Number</td>
-            <td>
-              <input
-                type="text"
-                name="rationCardNo"
-                value={formData.rationCardNo}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Identifications marks of the prospective employee</td>
-            <td>
-              1.{" "}
-              <input
-                type="text"
-                name="identificationOne"
-                value={formData.identificationOne}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>
-              2.{" "}
-              <input
-                type="text"
-                name="identificationTwo"
-                value={formData.identificationTwo}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>
-              3.{" "}
-              <input
-                type="text"
-                name="identificationThree"
-                value={formData.identificationThree}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Height</td>
-            <td>
-              <input
-                type="text"
-                name="height"
-                value={formData.height}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>
-              Marital status <br />
-              (unmarried/married/divorced)
-            </td>
-            <td>
-              <input
-                type="text"
-                name="martialStatus"
-                value={formData.martialStatus}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Spouse’s Name</td>
-            <td colSpan={3}>
-              <input
-                type="text"
-                name="spouseName"
-                value={formData.spouseName}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Spouse’s religion</td>
-            <td>
-              <input
-                type="text"
-                name="spouseReligion"
-                value={formData.spouseReligion}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>Spouse’s caste</td>
-            <td>
-              <input
-                type="text"
-                name="spouseCaste"
-                value={formData.spouseCaste}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Whether inter religion/caste <br />
-              marriage (yes/no)
-            </td>
-            <td>
-              <input
-                type="text"
-                name="interReligionCaste"
-                value={formData.interReligionCaste}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>Whether spouse is employed</td>
-            <td>
-              <input
-                type="text"
-                name="spouseEmployeed"
-                value={formData.spouseEmployeed}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Spouse employed in <br /> (specify organization)
-            </td>
-            <td colSpan={3}>
-              <input
-                type="text"
-                name="spouseEmployeedIn"
-                value={formData.spouseEmployeedIn}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Address Proof Upload</td>
-            <td>
-              <input
-                type="file"
-                name="addressProof"
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
-            <td>Pan Card Upload</td>
-            <td>
-              <input
-                type="file"
-                name="panCardFile"
-                onChange={(e) => handleInputChange(e)}
-              />
-            </td>
+            <td style={tdStyle}>Upload Address Proof</td>
+            <td style={tdStyle}>{renderInput("addressProof", "file")}</td>
+            <td style={tdStyle}>Upload PAN Card</td>
+            <td style={tdStyle}>{renderInput("panCardFile", "file")}</td>
           </tr>
         </tbody>
       </table>
+
+      <div className="signature">
+        <div className="specimen" style={{ width: "100%" }}>
+          <div className="specimen-signature">
+            <p style={{ fontWeight: 400 }}>Left thumb impression</p>
+            <p style={{ fontWeight: 400 }}>Applicant Signature</p>
+          </div>
+          <div className="signature-file">
+            <div className="drop-area" onClick={handleSignOneClick}>
+              <input
+                type="file"
+                name="signOne"
+                onChange={(e) => {
+                  handleFileChange(e);
+                  const reader = new FileReader();
+                  reader.onload = (e) => setSignOneSrc(e.target.result);
+                  reader.readAsDataURL(e.target.files[0]);
+                }}
+                style={{ display: "none" }}
+                ref={fileSignOneRef}
+              />
+              {signOneSrc ? (
+                <img
+                  src={signOneSrc}
+                  alt="Uploaded"
+                  style={{
+                    width: "200px",
+                    height: "50px",
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                  }}
+                />
+              ) : (
+                <div className="upload-text">Upload</div>
+              )}
+            </div>
+
+            <div className="drop-area" onClick={handleSignTwoClick}>
+              <input
+                type="file"
+                name="signTwo"
+                onChange={(e) => {
+                  handleFileChange(e);
+                  const reader = new FileReader();
+                  reader.onload = (e) => setSignTwoSrc(e.target.result);
+                  reader.readAsDataURL(e.target.files[0]);
+                }}
+                style={{ display: "none" }}
+                ref={fileSignTwoRef}
+              />
+              {signTwoSrc ? (
+                <img
+                  src={signTwoSrc}
+                  alt="Uploaded"
+                  style={{
+                    width: "200px",
+                    height: "50px",
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                  }}
+                />
+              ) : (
+                <div className="upload-text">Upload</div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
