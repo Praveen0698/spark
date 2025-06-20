@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bharat Dynamics Limited (BDL)",
-  description: "Official Website of Bharat Dynamics Limited, A Government of India Enterprise, Ministry of Defence.",
+  title: "Indian Railways",
+  description:
+    "Official Website of Indian Railways Recruitment, A Government of India Enterprise, Ministry of railways.",
 };
 
 export default function RootLayout({
