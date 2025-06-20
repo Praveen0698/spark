@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import bdl from "@/public/bdl.png";
+import railway from "@/public/railway.png";
 import Image from "next/image";
 const LoginUser = () => {
   const router = useRouter();
@@ -101,11 +101,12 @@ const LoginUser = () => {
           }}
         >
           <Image
-            src={bdl}
+            src={railway}
             alt="REC Logo"
             style={{
-              width: "12rem",
+              width: "10rem",
               alignSelf: "center",
+              marginBottom:20
             }}
           />
           <h2
@@ -204,8 +205,7 @@ const LoginUser = () => {
           padding: "1rem 0",
         }}
       >
-        Copyright © 2025 - All Rights Reserved. Official Website of Bharat
-        Dynamics Limited, A Government of India Enterprise, Ministry of Defence.
+        Copyright @ 2011 Centre For Railway Information Systems. All Rights Reserved.
       </footer>
     </div>
   );

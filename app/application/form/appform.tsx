@@ -11,9 +11,10 @@ import { Modal, Box, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
-import headerimg from "@/public/headerimg.png";
+import headerimg from "@/public/headerrail.png";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 const Mainfile = () => {
   const router = useRouter();
@@ -158,16 +159,25 @@ const Mainfile = () => {
 
   return (
     <>
-      <div className="fullpage" style={{ background: "#fdfdfd" }}>
-        <div style={{ width: "100%", height: "100%" }}>
+      <div style={{ backgroundColor: "#f9f9f9", minHeight: "100vh" }}>
+        <div
+          style={{
+            width: "100%",
+            maxHeight: "160px",
+            overflow: "hidden",
+            padding:"0.5rem",
+            boxShadow: "0 4px 6px -2px rgba(0, 0, 0, 0.3)", // bottom shadow
+            backgroundColor: "#fff", // optional for better contrast
+          }}
+        >
           <Image
             src={headerimg}
-            alt="logo"
-            style={{ width: "100%", height: "100%" }}
+            alt="Railway Logo"
+            style={{ width: "100%", objectFit: "contain" }}
           />
         </div>
 
-        <div className="App">
+        <div className="App" style={{ padding: "1.5rem 3rem" }}>
           <Header />
           <Signature formData={formData} setFormData={setFormData} />
           <Personal formData={formData} setFormData={setFormData} />
@@ -176,66 +186,66 @@ const Mainfile = () => {
           <Footer formData={formData} setFormData={setFormData} />
 
           <div
-            className="buttons-cont"
-            style={{ margin: "2rem 0", textAlign: "center" }}
+            style={{
+              margin: "3rem 0 2rem",
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
             <button
-              className="submit-btn"
               onClick={handleSave}
+              disabled={loading}
               style={{
-                backgroundColor: "#00529B",
+                backgroundColor: "#0078D7",
                 color: "#fff",
-                padding: "0.75rem 2rem",
+                padding: "0.9rem 2.5rem",
                 border: "none",
-                borderRadius: "5px",
+                borderRadius: "8px",
                 fontSize: "1rem",
+                fontWeight: "500",
                 cursor: "pointer",
-                boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                 transition: "all 0.3s ease",
               }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor = "#0056b3")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = "#00529B")
-              }
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.04)";
+                e.currentTarget.style.backgroundColor = "#005fbf";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.backgroundColor = "#0078D7";
+              }}
             >
               {loading ? "Submitting..." : "Submit"}
             </button>
           </div>
         </div>
 
-        <div className="footer" style={{ backgroundColor: bgColor }}>
-          <div className="full-col"></div>
-          <div
-            className="full-color"
+        {/* <div style={{ backgroundColor: bgColor, padding: "0.5rem 0" }}>
+          <p
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              textAlign: "center",
+              fontSize: "0.9rem",
+              color: textColor,
+              margin: 0,
             }}
           >
-            <p
-              style={{ fontSize: "0.8rem", color: textColor, marginBottom: 0 }}
-            >
-              {address}
-            </p>
-          </div>
-        </div>
+            {address}
+          </p>
+        </div> */}
+
         <footer
           style={{
             width: "100%",
-            height: "10%",
-            backgroundColor: "#00529B",
+            backgroundColor: "#003366",
             color: "white",
-            fontSize: "0.75rem",
+            fontSize: "0.85rem",
             textAlign: "center",
-            padding: "1rem 0",
+            padding: "1rem",
           }}
         >
-          Copyright © 2025 - All Rights Reserved. Official Website of Bharat
-          Dynamics Limited, A Government of India Enterprise, Ministry of
-          Defence.
+          © 2011 Centre For Railway Information Systems. All Rights Reserved.
         </footer>
       </div>
 
@@ -246,24 +256,25 @@ const Mainfile = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 500,
-            bgcolor: "white",
-            borderRadius: "12px",
+            width: 450,
+            bgcolor: "#ffffff",
+            borderRadius: 3,
             boxShadow: 24,
             p: 4,
+            textAlign: "center",
+            animation: "fadeIn 0.3s ease-in-out",
           }}
         >
+          <CheckCircleIcon sx={{ color: "#2e7d32", fontSize: 48, mb: 1 }} />
           <Typography
             variant="h5"
-            component="h2"
-            gutterBottom
-            sx={{ fontWeight: "bold", color: "#2e7d32" }}
+            sx={{ fontWeight: "bold", mb: 1, color: "#2e7d32" }}
           >
-            ✅ Form Submitted Successfully!
+            Form Submitted Successfully!
           </Typography>
-          <Typography variant="body1" gutterBottom>
-            Your application form has been submitted. Redirecting to login page
-            in <strong>{timer}</strong> second{timer !== 1 ? "s" : ""}...
+          <Typography variant="body1" sx={{ color: "#333" }}>
+            Redirecting to login page in <strong>{timer}</strong> second
+            {timer !== 1 ? "s" : ""}...
           </Typography>
         </Box>
       </Modal>
