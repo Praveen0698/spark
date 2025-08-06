@@ -13,14 +13,23 @@ import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
 import headerimg from "@/public/headerrail.png";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-
+import amblem from "@/public/amblem.png";
+import railLogo from "@/public/raillogo.gif";
+import years from "@/public/years.jpg";
 export const dynamic = "force-dynamic";
 
 const Mainfile = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const accessToken = searchParams?.get("token");
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkScreenSize = () => setIsMobile(window.innerWidth <= 768);
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
   const [formData, setFormData] = useState({
     photo: "",
     signOne: "",
@@ -110,13 +119,12 @@ const Mainfile = () => {
     declarationName: "",
     declarationSignature: "",
   });
-
   const [bgColor, setBgColor] = useState("");
   const [textColor, setTextColor] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [timer, setTimer] = useState(3); // countdown state
+  const [timer, setTimer] = useState(3);
 
   type TokenData = {
     colorPicker?: string;
@@ -138,7 +146,7 @@ const Mainfile = () => {
   const handleSave = () => {
     setLoading(true);
     setTimeout(() => {
-      setOpen(true); // open modal
+      setOpen(true);
       setLoading(false);
       startRedirectTimer();
     }, 1500);
@@ -160,24 +168,85 @@ const Mainfile = () => {
   return (
     <>
       <div style={{ backgroundColor: "#f9f9f9", minHeight: "100vh" }}>
+        {/* Header Image */}
         <div
           style={{
             width: "100%",
-            maxHeight: "160px",
-            overflow: "hidden",
-            padding:"0.5rem",
-            boxShadow: "0 4px 6px -2px rgba(0, 0, 0, 0.3)", // bottom shadow
-            backgroundColor: "#fff", // optional for better contrast
+            padding: "1vw",
+            boxShadow: "0 4px 6px -2px rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#fff",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "10px",
+            flexWrap: isMobile ? "wrap" : "nowrap",
           }}
         >
-          <Image
-            src={headerimg}
-            alt="Railway Logo"
-            style={{ width: "100%", objectFit: "contain" }}
-          />
+          {/* Left Logo */}
+          <div
+            style={{
+              flex: "1 1 100px",
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Image
+              src={railLogo}
+              alt="Railway Logo"
+              style={{
+                width: "100%",
+                maxWidth: "360px",
+                objectFit: "contain",
+                height: isMobile ? "60px" : "100px",
+              }}
+            />
+          </div>
+
+          {/* Right Logos */}
+          <div
+            style={{
+              flex: "1 1 200px",
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: isMobile ? "20px" : "50px",
+              flexWrap: "wrap",
+            }}
+          >
+            <Image
+              src={years}
+              alt="Years"
+              style={{
+                width: "100%",
+                maxWidth: isMobile ? "70px" : "100px",
+                height: isMobile ? "60px" : "auto",
+                objectFit: "contain",
+              }}
+            />
+            <Image
+              src={amblem}
+              alt="Amblem"
+              style={{
+                width: "100%",
+                maxWidth: isMobile ? "70px" : "100px",
+                height: isMobile ? "60px" : "100px",
+                objectFit: "contain",
+              }}
+            />
+          </div>
         </div>
 
-        <div className="App" style={{ padding: "1.5rem 3rem" }}>
+        {/* Main Content */}
+        <div
+          className="App"
+          style={{
+            padding: "4vw 5vw",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            width: "100%",
+            boxSizing: "border-box",
+          }}
+        >
           <Header />
           <Signature formData={formData} setFormData={setFormData} />
           <Personal formData={formData} setFormData={setFormData} />
@@ -185,12 +254,14 @@ const Mainfile = () => {
           <Education formData={formData} setFormData={setFormData} />
           <Footer formData={formData} setFormData={setFormData} />
 
+          {/* Submit Button */}
           <div
             style={{
               margin: "3rem 0 2rem",
-              textAlign: "center",
               display: "flex",
               justifyContent: "center",
+              width: "100%",
+              textAlign: "center",
             }}
           >
             <button
@@ -222,19 +293,7 @@ const Mainfile = () => {
           </div>
         </div>
 
-        {/* <div style={{ backgroundColor: bgColor, padding: "0.5rem 0" }}>
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "0.9rem",
-              color: textColor,
-              margin: 0,
-            }}
-          >
-            {address}
-          </p>
-        </div> */}
-
+        {/* Footer */}
         <footer
           style={{
             width: "100%",
@@ -242,13 +301,15 @@ const Mainfile = () => {
             color: "white",
             fontSize: "0.85rem",
             textAlign: "center",
-            padding: "1rem",
+            padding: "1rem 5vw",
+            boxSizing: "border-box",
           }}
         >
           © 2011 Centre For Railway Information Systems. All Rights Reserved.
         </footer>
       </div>
 
+      {/* Modal on Submission */}
       <Modal open={open}>
         <Box
           sx={{
@@ -256,7 +317,8 @@ const Mainfile = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 450,
+            width: "90vw",
+            maxWidth: "450px",
             bgcolor: "#ffffff",
             borderRadius: 3,
             boxShadow: 24,

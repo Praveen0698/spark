@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const headingStyle = {
-  fontSize: "16px",
-  marginBottom: "20px",
+const headingStyleBase = {
   fontWeight: "bold",
 };
 
-const dottedInputStyle = {
+const dottedInputBase = {
   border: "none",
   borderBottom: "1px dotted black",
   outline: "none",
@@ -14,6 +12,45 @@ const dottedInputStyle = {
 };
 
 const Footer = ({ formData, setFormData }) => {
+  const [inputWidths, setInputWidths] = useState({
+    small: "100px",
+    medium: "150px",
+    large: "200px",
+    xlarge: "300px",
+  });
+
+  useEffect(() => {
+    const updateWidths = () => {
+      const width = window.innerWidth;
+      if (width < 480) {
+        setInputWidths({
+          small: "80px",
+          medium: "100px",
+          large: "120px",
+          xlarge: "180px",
+        });
+      } else if (width < 768) {
+        setInputWidths({
+          small: "100px",
+          medium: "130px",
+          large: "170px",
+          xlarge: "240px",
+        });
+      } else {
+        setInputWidths({
+          small: "100px",
+          medium: "150px",
+          large: "200px",
+          xlarge: "300px",
+        });
+      }
+    };
+
+    updateWidths();
+    window.addEventListener("resize", updateWidths);
+    return () => window.removeEventListener("resize", updateWidths);
+  }, []);
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -21,105 +58,68 @@ const Footer = ({ formData, setFormData }) => {
     });
   };
 
+  const dottedInput = (widthKey) => ({
+    ...dottedInputBase,
+    width: inputWidths[widthKey],
+  });
+
   return (
     <>
       {/* ANNEXURE-D */}
       <section style={{ margin: "50px 0", fontFamily: "serif" }}>
-        <h3 style={headingStyle}>
+        <h3 style={{ ...headingStyleBase, fontSize: "16px", marginBottom: "20px" }}>
           ANNEXURE-D: <span> Declaration </span>
         </h3>
 
         <p style={{ lineHeight: "1.8" }}>
           “I{" "}
-          <input
-            type="text"
-            name="candidateName"
-            style={{ ...dottedInputStyle, width: "200px" }}
-          />{" "}
-          Son/daughter of Shri{" "}
-          <input
-            type="text"
-            name="fatherName"
-            style={{ ...dottedInputStyle, width: "200px" }}
-          />
+          <input type="text" name="candidateName" style={dottedInput("large")} onChange={handleInputChange} />
+          {" "}Son/daughter of Shri{" "}
+          <input type="text" name="fatherName" style={dottedInput("large")} onChange={handleInputChange} />
           , resident{" "}
-          <input
-            type="text"
-            name="residence"
-            style={{ ...dottedInputStyle, width: "100px" }}
-          />{" "}
-          of{" "}
-          <input
-            type="text"
-            name="street"
-            style={{ ...dottedInputStyle, width: "150px" }}
-          />{" "}
-          Street,{" "}
-          <input
-            type="text"
-            name="village"
-            style={{ ...dottedInputStyle, width: "150px" }}
-          />{" "}
-          Village/Town/City,{" "}
-          <input
-            type="text"
-            name="district"
-            style={{ ...dottedInputStyle, width: "120px" }}
-          />{" "}
-          District,{" "}
-          <input
-            type="text"
-            name="state"
-            style={{ ...dottedInputStyle, width: "120px" }}
-          />{" "}
-          State, hereby declare that I belong to the{" "}
-          <input
-            type="text"
-            name="minorityCommunity"
-            style={{ ...dottedInputStyle, width: "180px" }}
-          />{" "}
-          (indicate minority community notified by Central Government i.e.
+          <input type="text" name="residence" style={dottedInput("small")} onChange={handleInputChange} /> of{" "}
+          <input type="text" name="street" style={dottedInput("medium")} onChange={handleInputChange} /> Street,{" "}
+          <input type="text" name="village" style={dottedInput("medium")} onChange={handleInputChange} /> Village/Town/City,{" "}
+          <input type="text" name="district" style={dottedInput("medium")} onChange={handleInputChange} /> District,{" "}
+          <input type="text" name="state" style={dottedInput("medium")} onChange={handleInputChange} /> State, hereby declare that I belong to the{" "}
+          <input type="text" name="minorityCommunity" style={dottedInput("xlarge")} onChange={handleInputChange} /> (indicate minority community notified by Central Government i.e.
           Muslim/Sikh/Christian/Buddhist/Parsi/Jain).
         </p>
 
         <div
           style={{
             display: "flex",
+            flexDirection: window.innerWidth < 600 ? "column" : "row",
             justifyContent: "space-between",
             marginTop: "30px",
+            gap: "20px",
           }}
         >
           <div>
             <p>
               Place:{" "}
-              <input
-                type="text"
-                name="place"
-                style={{ ...dottedInputStyle, width: "150px" }}
-              />
+              <input type="text" name="place" style={dottedInput("medium")} onChange={handleInputChange} />
             </p>
             <p>
               Date:{" "}
-              <input
-                type="text"
-                name="date"
-                style={{ ...dottedInputStyle, width: "150px" }}
-              />
+              <input type="text" name="date" style={dottedInput("medium")} onChange={handleInputChange} />
             </p>
           </div>
 
-          <div style={{ textAlign: "right" }}>
+          <div style={{ textAlign: window.innerWidth < 600 ? "left" : "right" }}>
             <p>Signature of the Candidate:</p>
             <input
               type="text"
               name="signature"
-              style={{ ...dottedInputStyle, width: "200px", marginBottom: 10 }}
+              style={{ ...dottedInput("large"), marginBottom: 10 }}
+              onChange={handleInputChange}
             />
             <p>Name of the Candidate:</p>
             <input
               type="text"
               name="nameAgain"
-              style={{ ...dottedInputStyle, width: "200px" }}
+              style={dottedInput("large")}
+              onChange={handleInputChange}
             />
           </div>
         </div>
@@ -136,14 +136,16 @@ const Footer = ({ formData, setFormData }) => {
 
       {/* ANNEXURE-E */}
       <section style={{ fontFamily: "serif" }}>
-        <h3 style={headingStyle}>
+        <h3 style={{ ...headingStyleBase, fontSize: "16px", marginBottom: "20px" }}>
           ANNEXURE-E: <span> Income Details </span>
         </h3>
+
         <h2
           style={{
             textAlign: "center",
             fontWeight: "bold",
             textDecoration: "underline",
+            fontSize: window.innerWidth < 600 ? "14px" : "16px",
           }}
         >
           INCOME CERTIFICATE TO BE SUBMITTED BY ECONOMICALLY BACKWARD CANDIDATE
@@ -166,7 +168,8 @@ const Footer = ({ formData, setFormData }) => {
               <input
                 type="text"
                 name={`income_${index}`}
-                style={{ ...dottedInputStyle, width: "300px" }}
+                style={dottedInput("xlarge")}
+                onChange={handleInputChange}
               />
             </p>
           ))}

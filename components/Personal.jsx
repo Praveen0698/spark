@@ -1,9 +1,12 @@
 import React, { useRef, useState } from "react";
 
+// Shared base styles
 const tdStyle = {
   padding: "6px 10px",
   fontSize: "13px",
   verticalAlign: "top",
+  width: "25%",
+  boxSizing: "border-box",
 };
 
 const inputStyle = {
@@ -13,20 +16,27 @@ const inputStyle = {
   width: "100%",
   outline: "none",
   background: "transparent",
+  boxSizing: "border-box",
 };
 
 const fileInputStyle = {
   fontSize: "13px",
+  width: "100%",
+  boxSizing: "border-box",
 };
 
 const tableStyle = {
   width: "100%",
   borderCollapse: "collapse",
+  tableLayout: "fixed",
 };
 
 const sectionStyle = {
   fontFamily: "serif",
   pageBreakInside: "avoid",
+  padding: "10px",
+  width: "100%",
+  boxSizing: "border-box",
 };
 
 const headingStyle = {
@@ -41,6 +51,20 @@ const subHeadingStyle = {
   marginBottom: "10px",
 };
 
+// Drop area style for signature boxes
+const dropAreaStyle = {
+  border: "1px dashed #aaa",
+  width: "100%",
+  maxWidth: "200px",
+  height: "60px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  margin: "10px 50px",
+  boxSizing: "border-box",
+};
+
 const Personal = ({ formData, setFormData }) => {
   const [signOneSrc, setSignOneSrc] = useState("");
   const [signTwoSrc, setSignTwoSrc] = useState("");
@@ -48,13 +72,8 @@ const Personal = ({ formData, setFormData }) => {
   const fileSignOneRef = useRef(null);
   const fileSignTwoRef = useRef(null);
 
-  const handleSignOneClick = () => {
-    fileSignOneRef.current.click();
-  };
-
-  const handleSignTwoClick = () => {
-    fileSignTwoRef.current.click();
-  };
+  const handleSignOneClick = () => fileSignOneRef.current.click();
+  const handleSignTwoClick = () => fileSignTwoRef.current.click();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -101,171 +120,116 @@ const Personal = ({ formData, setFormData }) => {
         ANNEXURE-A: <span>Personal Details</span>
       </h3>
       <p style={subHeadingStyle}>(To be filled by the prospective employee)</p>
+
       <table style={tableStyle}>
         <tbody>
-          <tr>
-            <td style={tdStyle}>Name</td>
-            <td colSpan={3} style={tdStyle}>
-              {renderInput("name")}
-            </td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Date of Birth</td>
-            <td style={tdStyle}>{renderInput("dob")}</td>
-            <td style={tdStyle}>Sex</td>
-            <td style={tdStyle}>{renderInput("sex")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Father's Name</td>
-            <td colSpan={3} style={tdStyle}>
-              {renderInput("fatherName")}
-            </td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Mother's Name</td>
-            <td colSpan={3} style={tdStyle}>
-              {renderInput("motherName")}
-            </td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Nationality</td>
-            <td style={tdStyle}>{renderInput("nationality")}</td>
-            <td style={tdStyle}>State</td>
-            <td style={tdStyle}>{renderInput("state")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Caste</td>
-            <td style={tdStyle}>{renderInput("caste")}</td>
-            <td style={tdStyle}>Religion</td>
-            <td style={tdStyle}>{renderInput("religion")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Category (General/SC/ST/OBC)</td>
-            <td style={tdStyle}>{renderInput("casteCategory")}</td>
-            <td style={tdStyle}>Physically Handicapped (Yes/No)</td>
-            <td style={tdStyle}>{renderInput("physicallyHandicapped")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Ex-Servicemen (Yes/No)</td>
-            <td style={tdStyle}>{renderInput("exServicemen")}</td>
-            <td style={tdStyle}>PAN Number</td>
-            <td style={tdStyle}>{renderInput("panNumber")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Voter ID</td>
-            <td style={tdStyle}>{renderInput("voterId")}</td>
-            <td style={tdStyle}>Ration Card</td>
-            <td style={tdStyle}>{renderInput("rationCardNo")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Identification Marks</td>
-            <td style={tdStyle}>{renderInput("identificationOne")}</td>
-            <td style={tdStyle}>{renderInput("identificationTwo")}</td>
-            <td style={tdStyle}>{renderInput("identificationThree")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Height</td>
-            <td style={tdStyle}>{renderInput("height")}</td>
-            <td style={tdStyle}>Marital Status</td>
-            <td style={tdStyle}>{renderInput("martialStatus")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Spouse's Name</td>
-            <td colSpan={3} style={tdStyle}>
-              {renderInput("spouseName")}
-            </td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Spouse Religion</td>
-            <td style={tdStyle}>{renderInput("spouseReligion")}</td>
-            <td style={tdStyle}>Spouse Caste</td>
-            <td style={tdStyle}>{renderInput("spouseCaste")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Inter Religion/Caste Marriage (Yes/No)</td>
-            <td style={tdStyle}>{renderInput("interReligionCaste")}</td>
-            <td style={tdStyle}>Spouse Employed</td>
-            <td style={tdStyle}>{renderInput("spouseEmployeed")}</td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Spouse Employed In (Org.)</td>
-            <td colSpan={3} style={tdStyle}>
-              {renderInput("spouseEmployeedIn")}
-            </td>
-          </tr>
-          <tr>
-            <td style={tdStyle}>Upload Address Proof</td>
-            <td style={tdStyle}>{renderInput("addressProof", "file")}</td>
-            <td style={tdStyle}>Upload PAN Card</td>
-            <td style={tdStyle}>{renderInput("panCardFile", "file")}</td>
-          </tr>
+          {[
+            ["Name", "name", "", ""],
+            ["Date of Birth", "dob", "Sex", "sex"],
+            ["Father's Name", "fatherName", "", ""],
+            ["Mother's Name", "motherName", "", ""],
+            ["Nationality", "nationality", "State", "state"],
+            ["Caste", "caste", "Religion", "religion"],
+            ["Category (General/SC/ST/OBC)", "casteCategory", "Physically Handicapped (Yes/No)", "physicallyHandicapped"],
+            ["Ex-Servicemen (Yes/No)", "exServicemen", "PAN Number", "panNumber"],
+            ["Voter ID", "voterId", "Ration Card", "rationCardNo"],
+            ["Identification Marks", "identificationOne", "identificationTwo", "identificationThree"],
+            ["Height", "height", "Marital Status", "martialStatus"],
+            ["Spouse's Name", "spouseName", "", ""],
+            ["Spouse Religion", "spouseReligion", "Spouse Caste", "spouseCaste"],
+            ["Inter Religion/Caste Marriage (Yes/No)", "interReligionCaste", "Spouse Employed", "spouseEmployeed"],
+            ["Spouse Employed In (Org.)", "spouseEmployeedIn", "", ""],
+            ["Upload Address Proof", "addressProof", "Upload PAN Card", "panCardFile"],
+          ].map(([label1, name1, label2, name2], index) => (
+            <tr key={index}>
+              <td style={tdStyle}>{label1}</td>
+              <td style={tdStyle}>{renderInput(name1, name1.toLowerCase().includes("file") ? "file" : "text")}</td>
+              {label2 && name2 ? (
+                <>
+                  <td style={tdStyle}>{label2}</td>
+                  <td style={tdStyle}>{renderInput(name2, name2.toLowerCase().includes("file") ? "file" : "text")}</td>
+                </>
+              ) : (
+                <>
+                  <td style={tdStyle}></td>
+                  <td style={tdStyle}></td>
+                </>
+              )}
+            </tr>
+          ))}
         </tbody>
       </table>
 
-      <div className="signature">
-        <div className="specimen" style={{ width: "100%" }}>
-          <div className="specimen-signature">
-            <p style={{ fontWeight: 400 }}>Left thumb impression</p>
-            <p style={{ fontWeight: 400 }}>Applicant Signature</p>
+      {/* Signatures */}
+      <div
+        className="signature"
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          gap: "20px",
+        }}
+      >
+        <div style={{ flex: "1 1 200px", textAlign: "center" }}>
+          <p style={{ fontWeight: 400 }}>Left thumb impression</p>
+          <div style={dropAreaStyle} onClick={handleSignOneClick}>
+            <input
+              type="file"
+              name="signOne"
+              onChange={(e) => {
+                handleFileChange(e);
+                const reader = new FileReader();
+                reader.onload = (e) => setSignOneSrc(e.target.result);
+                reader.readAsDataURL(e.target.files[0]);
+              }}
+              style={{ display: "none" }}
+              ref={fileSignOneRef}
+            />
+            {signOneSrc ? (
+              <img
+                src={signOneSrc}
+                alt="Uploaded"
+                style={{
+                  width: "100%",
+                  height: "50px",
+                  objectFit: "contain",
+                }}
+              />
+            ) : (
+              <div style={{ fontSize: "13px", color: "#555" }}>Upload</div>
+            )}
           </div>
-          <div className="signature-file">
-            <div className="drop-area" onClick={handleSignOneClick}>
-              <input
-                type="file"
-                name="signOne"
-                onChange={(e) => {
-                  handleFileChange(e);
-                  const reader = new FileReader();
-                  reader.onload = (e) => setSignOneSrc(e.target.result);
-                  reader.readAsDataURL(e.target.files[0]);
-                }}
-                style={{ display: "none" }}
-                ref={fileSignOneRef}
-              />
-              {signOneSrc ? (
-                <img
-                  src={signOneSrc}
-                  alt="Uploaded"
-                  style={{
-                    width: "200px",
-                    height: "50px",
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                  }}
-                />
-              ) : (
-                <div className="upload-text">Upload</div>
-              )}
-            </div>
+        </div>
 
-            <div className="drop-area" onClick={handleSignTwoClick}>
-              <input
-                type="file"
-                name="signTwo"
-                onChange={(e) => {
-                  handleFileChange(e);
-                  const reader = new FileReader();
-                  reader.onload = (e) => setSignTwoSrc(e.target.result);
-                  reader.readAsDataURL(e.target.files[0]);
+        <div style={{ flex: "1 1 200px", textAlign: "center" }}>
+          <p style={{ fontWeight: 400 }}>Applicant Signature</p>
+          <div style={dropAreaStyle} onClick={handleSignTwoClick}>
+            <input
+              type="file"
+              name="signTwo"
+              onChange={(e) => {
+                handleFileChange(e);
+                const reader = new FileReader();
+                reader.onload = (e) => setSignTwoSrc(e.target.result);
+                reader.readAsDataURL(e.target.files[0]);
+              }}
+              style={{ display: "none" }}
+              ref={fileSignTwoRef}
+            />
+            {signTwoSrc ? (
+              <img
+                src={signTwoSrc}
+                alt="Uploaded"
+                style={{
+                  width: "100%",
+                  height: "50px",
+                  objectFit: "contain",
                 }}
-                style={{ display: "none" }}
-                ref={fileSignTwoRef}
               />
-              {signTwoSrc ? (
-                <img
-                  src={signTwoSrc}
-                  alt="Uploaded"
-                  style={{
-                    width: "200px",
-                    height: "50px",
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                  }}
-                />
-              ) : (
-                <div className="upload-text">Upload</div>
-              )}
-            </div>
+            ) : (
+              <div style={{ fontSize: "13px", color: "#555" }}>Upload</div>
+            )}
           </div>
         </div>
       </div>

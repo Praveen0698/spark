@@ -2,10 +2,21 @@ import React from "react";
 
 const Header = () => {
   return (
-    <section className="header" style={{ padding: "20px 30px" }}>
+    <section
+      className="header"
+      style={{
+        padding: "20px 5%",
+        width: "100%",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* Title Section */}
       <div
         className="header-title"
-        style={{ textAlign: "center", marginBottom: "25px" }}
+        style={{
+          textAlign: "center",
+          marginBottom: "25px",
+        }}
       >
         <h2
           style={{
@@ -13,17 +24,26 @@ const Header = () => {
             fontWeight: "bold",
             marginTop: "20px",
             textDecoration: "underline",
+            lineHeight: "1.4",
+            wordWrap: "break-word",
           }}
         >
-          INDIAN RAILWAYS – EASTERN DIVISION  
+          INDIAN RAILWAYS – EASTERN DIVISION
           <br />
           RECRUITMENT & JOINING APPLICATION FORM
         </h2>
       </div>
 
+      {/* Instructions */}
       <div
         className="header-instruction"
-        style={{ fontSize: "15px", lineHeight: "1.8", textAlign: "justify" }}
+        style={{
+          fontSize: "15px",
+          lineHeight: "1.8",
+          textAlign: "justify",
+          maxWidth: "100%",
+          wordWrap: "break-word",
+        }}
       >
         <p>
           <strong>Important Notice to New Recruits:</strong>  

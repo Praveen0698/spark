@@ -3,28 +3,45 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import railway from "@/public/railway.png";
 import Image from "next/image";
+import railway from "@/public/railway.png";
+
 const LoginUser = () => {
   const router = useRouter();
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [captchaCode, setCaptchaCode] = useState("");
+  const [screenWidth, setScreenWidth] = useState<number>(0);
+  const [hasMounted, setHasMounted] = useState(false);
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     captcha: "",
   });
 
-  useEffect(() => {
-    generateCaptcha();
-  }, []);
-
-  const generateCaptcha = () => {
+    const generateCaptcha = () => {
     const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
     setCaptchaCode(randomCode);
   };
+
+  useEffect(() => {
+    setHasMounted(true);
+    generateCaptcha();
+    setScreenWidth(window.innerWidth);
+
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (!hasMounted) return null; // ✅ Prevent hydration errors
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -58,10 +75,20 @@ const LoginUser = () => {
         router.push(`/application?token=${result.data.accessToken}`);
       }
     } catch {
-      setLoading(false);
       setError("** Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
+
+  const loginBoxWidth =
+    screenWidth >= 1024
+      ? "33%"
+      : screenWidth >= 768
+      ? "60%"
+      : "90%";
+
+  const headerHeight = screenWidth <= 768 ? "100px" : "160px"; // Responsive image height
 
   return (
     <div
@@ -71,12 +98,12 @@ const LoginUser = () => {
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        // backgroundImage:
-        //   "url('https://res.cloudinary.com/dzjuhiwxw/image/upload/f_auto,q_auto/v1/samples/zthveamo9qq8myeeuhws')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
+
+      {/* Login Form */}
       <div
         style={{
           display: "flex",
@@ -84,16 +111,15 @@ const LoginUser = () => {
           alignItems: "center",
           width: "100%",
           height: "90%",
-          padding: "1rem",
         }}
       >
         <div
           style={{
             backgroundColor: "white",
             boxShadow: "0 0 1rem 0.4rem #ccc",
-            width: "33%",
+            width: loginBoxWidth,
             padding: "1rem",
-            marginTop: "2.5rem",
+            marginTop: "2rem",
             height: "fit-content",
             border: "1px solid #e5e7eb",
             display: "flex",
@@ -104,9 +130,9 @@ const LoginUser = () => {
             src={railway}
             alt="REC Logo"
             style={{
-              width: "10rem",
+              width: "8rem",
               alignSelf: "center",
-              marginBottom:20
+              marginBottom: 20,
             }}
           />
           <h2
@@ -115,7 +141,7 @@ const LoginUser = () => {
               color: "#00529B",
               fontWeight: "bold",
               marginBottom: "1.5rem",
-              fontSize: "1.25rem",
+              fontSize: "1.125rem",
             }}
           >
             Please Enter Login Details
@@ -123,7 +149,11 @@ const LoginUser = () => {
 
           <form
             onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.75rem",
+            }}
           >
             <input
               type="text"
@@ -133,6 +163,7 @@ const LoginUser = () => {
               onChange={handleInputChange}
               style={inputStyle}
               required
+              inputMode="text"
             />
 
             <input
@@ -143,10 +174,16 @@ const LoginUser = () => {
               onChange={handleInputChange}
               style={inputStyle}
               required
+              inputMode="text"
             />
 
             <div
-              style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
             >
               <input
                 type="text"
@@ -154,8 +191,9 @@ const LoginUser = () => {
                 placeholder="Enter Security Code"
                 value={formData.captcha}
                 onChange={handleInputChange}
-                style={{ ...inputStyle, flex: 1 }}
+                style={{ ...inputStyle, flex: 1, minWidth: "120px" }}
                 required
+                inputMode="numeric"
               />
               <div
                 style={{
@@ -163,10 +201,11 @@ const LoginUser = () => {
                   color: "black",
                   fontFamily: "monospace",
                   fontWeight: "bold",
-                  fontSize: "1.125rem",
-                  padding: "0.25rem 1rem",
+                  fontSize: "1rem",
+                  padding: "0.5rem 1rem",
                   borderRadius: "0.375rem",
                   border: "1px solid #d1d5db",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {captchaCode}
@@ -194,10 +233,10 @@ const LoginUser = () => {
         </div>
       </div>
 
+      {/* Footer */}
       <footer
         style={{
           width: "100%",
-          height: "10%",
           backgroundColor: "#00529B",
           color: "white",
           fontSize: "0.75rem",
@@ -205,30 +244,34 @@ const LoginUser = () => {
           padding: "1rem 0",
         }}
       >
-        Copyright @ 2011 Centre For Railway Information Systems. All Rights Reserved.
+        Copyright © 2011 Centre For Railway Information Systems. All Rights
+        Reserved.
       </footer>
     </div>
   );
 };
 
+// ✅ Styled Inputs - fontSize 16px to prevent mobile zoom
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "0.5rem 1rem",
   border: "1px solid #d1d5db",
-  fontSize: "0.875rem",
+  fontSize: "16px", // Prevents zoom on mobile input focus
   borderRadius: "0.375rem",
   outline: "none",
   height: "40px",
   margin: 0,
+  boxSizing: "border-box",
 };
 
+// ✅ Button Style
 const submitButtonStyle: React.CSSProperties = {
   width: "100%",
   backgroundColor: "#00529B",
   color: "white",
   fontWeight: 600,
   padding: "0.5rem 0",
-  fontSize: "0.875rem",
+  fontSize: "16px", // Also 16px to avoid zoom on iOS
   borderRadius: "0.375rem",
   cursor: "pointer",
   border: "none",
